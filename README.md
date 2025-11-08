@@ -1,7 +1,6 @@
 # AgentPay: AI-Powered Crypto Subscriptions on Arc
 
-![AgentPay Pro UI](https://placehold.co/1200x600/007AFF/FFFFFF?text=AgentPay+Pro+Dashboard&font=roboto)
-*(Replace the image link above with a real screenshot of your beautiful new dashboard before submitting!)*
+![AgentPay Pro UI](assets/agentpay-ui.jpg)
 
 ## 🚀 The Vision
 **AgentPay** is an AI agent that automates recurring crypto payments on the Arc L1 blockchain.
