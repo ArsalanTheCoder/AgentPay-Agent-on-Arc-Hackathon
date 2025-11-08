@@ -1,0 +1,728 @@
+{
+  "address": "0xAF234A4faF6EEDac09694E4c7690F9a6CA993932",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_usdc",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "AlreadyPaid",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InsufficientBalance",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidAmount",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidDate",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidRecipient",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NotYetDue",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SubscriptionNotFound",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "TransferFailed",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Unauthorized",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "subscriptionId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "payer",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "PaymentExecuted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "subscriptionId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "payer",
+          "type": "address"
+        }
+      ],
+      "name": "SubscriptionCancelled",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "subscriptionId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "payer",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "paymentDate",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "description",
+          "type": "string"
+        }
+      ],
+      "name": "SubscriptionCreated",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "USDC",
+      "outputs": [
+        {
+          "internalType": "contract IERC20",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "startDate",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "intervalDays",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "count",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "description",
+          "type": "string"
+        }
+      ],
+      "name": "batchSchedulePayments",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "subscriptionIds",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "subscriptionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "canExecute",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "subscriptionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "cancelSubscription",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "subscriptionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "executePayment",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "getPendingSubscriptions",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "subscriptionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getSubscription",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "payer",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "paymentDate",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "paid",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "cancelled",
+          "type": "bool"
+        },
+        {
+          "internalType": "string",
+          "name": "description",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getTotalSubscriptions",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        }
+      ],
+      "name": "getUserSubscriptions",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "description",
+          "type": "string"
+        }
+      ],
+      "name": "payNow",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "subscriptionId",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "paymentDate",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "description",
+          "type": "string"
+        }
+      ],
+      "name": "schedulePayment",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "subscriptionId",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "subscriptions",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "payer",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "paymentDate",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "paid",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "cancelled",
+          "type": "bool"
+        },
+        {
+          "internalType": "string",
+          "name": "description",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "userSubscriptions",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0xf2d9b2c993b5c7d2252fdf14ef9e9b1e028616242e04716ef3bef473db734c00",
+  "receipt": {
+    "to": null,
+    "from": "0xFE36aDD4CeBCb2f9C4090F966F55A21D59071AC9",
+    "contractAddress": "0xAF234A4faF6EEDac09694E4c7690F9a6CA993932",
+    "transactionIndex": 0,
+    "gasUsed": "1713172",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x1ae919b3db93d05b3040511ac4efc47d2969afa7a5ceec22e263a9909ed3537b",
+    "transactionHash": "0xf2d9b2c993b5c7d2252fdf14ef9e9b1e028616242e04716ef3bef473db734c00",
+    "logs": [],
+    "blockNumber": 9603951,
+    "cumulativeGasUsed": "1713172",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0x3600000000000000000000000000000000000000"
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "c12f3a50cf9792f24ef640349e0a9476",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_usdc\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"AlreadyPaid\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InsufficientBalance\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidAmount\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidDate\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidRecipient\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NotYetDue\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"SubscriptionNotFound\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"TransferFailed\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"Unauthorized\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"subscriptionId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"payer\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"name\":\"PaymentExecuted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"subscriptionId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"payer\",\"type\":\"address\"}],\"name\":\"SubscriptionCancelled\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"subscriptionId\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"payer\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"paymentDate\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"}],\"name\":\"SubscriptionCreated\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"USDC\",\"outputs\":[{\"internalType\":\"contract IERC20\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"startDate\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"intervalDays\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"count\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"}],\"name\":\"batchSchedulePayments\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"subscriptionIds\",\"type\":\"uint256[]\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"subscriptionId\",\"type\":\"uint256\"}],\"name\":\"canExecute\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"subscriptionId\",\"type\":\"uint256\"}],\"name\":\"cancelSubscription\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"subscriptionId\",\"type\":\"uint256\"}],\"name\":\"executePayment\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"getPendingSubscriptions\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"subscriptionId\",\"type\":\"uint256\"}],\"name\":\"getSubscription\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"payer\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"paymentDate\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"paid\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"cancelled\",\"type\":\"bool\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTotalSubscriptions\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"getUserSubscriptions\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"}],\"name\":\"payNow\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"subscriptionId\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"paymentDate\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"}],\"name\":\"schedulePayment\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"subscriptionId\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"subscriptions\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"payer\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"paymentDate\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"paid\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"cancelled\",\"type\":\"bool\"},{\"internalType\":\"string\",\"name\":\"description\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"userSubscriptions\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"AI agent creates multiple schedules for \\\"recurring\\\" effect\",\"kind\":\"dev\",\"methods\":{\"batchSchedulePayments(address,uint256,uint256,uint256,uint256,string)\":{\"params\":{\"amount\":\"Amount per payment\",\"count\":\"How many payments to schedule\",\"description\":\"Base description\",\"intervalDays\":\"Days between payments (30 = monthly)\",\"recipient\":\"Payment recipient\",\"startDate\":\"First payment date\"}},\"cancelSubscription(uint256)\":{\"params\":{\"subscriptionId\":\"The subscription to cancel\"}},\"executePayment(uint256)\":{\"params\":{\"subscriptionId\":\"The subscription to execute\"}},\"schedulePayment(address,uint256,uint256,string)\":{\"params\":{\"amount\":\"How much USDC to send\",\"description\":\"Payment description for receipts\",\"paymentDate\":\"When to send (unix timestamp)\",\"recipient\":\"Who receives the payment\"},\"returns\":{\"subscriptionId\":\"The created subscription ID\"}}},\"title\":\"AgentPay Scheduled Payments\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"batchSchedulePayments(address,uint256,uint256,uint256,uint256,string)\":{\"notice\":\"Batch create multiple scheduled payments (for recurring setup)\"},\"canExecute(uint256)\":{\"notice\":\"Check if payment is ready to execute\"},\"cancelSubscription(uint256)\":{\"notice\":\"Cancel a scheduled payment (only payer)\"},\"executePayment(uint256)\":{\"notice\":\"Execute the scheduled payment (anyone can call when due)\"},\"getPendingSubscriptions(address)\":{\"notice\":\"Get pending (unpaid, uncancelled, due soon) subscriptions\"},\"getSubscription(uint256)\":{\"notice\":\"Get subscription details\"},\"getTotalSubscriptions()\":{\"notice\":\"Get total subscriptions created\"},\"getUserSubscriptions(address)\":{\"notice\":\"Get all subscriptions for a user\"},\"schedulePayment(address,uint256,uint256,string)\":{\"notice\":\"Create scheduled payment (AI creates multiple for \\\"recurring\\\")\"}},\"notice\":\"Simple scheduled USDC payments on Arc blockchain\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/arc.sol\":\"AgentPayScheduledPayments\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"src/arc.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\r\\npragma solidity ^0.8.20;\\r\\n\\r\\ninterface IERC20 {\\r\\n    function transfer(address to, uint256 amount) external returns (bool);\\r\\n    function transferFrom(address from, address to, uint256 amount) external returns (bool);\\r\\n    function balanceOf(address account) external view returns (uint256);\\r\\n}\\r\\n\\r\\n\\r\\n/**\\r\\n * @title AgentPay Scheduled Payments\\r\\n * @notice Simple scheduled USDC payments on Arc blockchain\\r\\n * @dev AI agent creates multiple schedules for \\\"recurring\\\" effect\\r\\n */\\r\\ncontract AgentPayScheduledPayments {\\r\\n    \\r\\n    IERC20 public immutable USDC;\\r\\n\\r\\n    // Errors\\r\\n    error InvalidRecipient();\\r\\n    error InvalidAmount();\\r\\n    error InvalidDate();\\r\\n    error InsufficientBalance();\\r\\n    error TransferFailed();\\r\\n    error SubscriptionNotFound();\\r\\n    error NotYetDue();\\r\\n    error AlreadyPaid();\\r\\n    error Unauthorized();\\r\\n\\r\\n    // Events\\r\\n    event SubscriptionCreated(\\r\\n        uint256 indexed subscriptionId,\\r\\n        address indexed payer,\\r\\n        address indexed recipient,\\r\\n        uint256 amount,\\r\\n        uint256 paymentDate,\\r\\n        string description\\r\\n    );\\r\\n\\r\\n    event PaymentExecuted(\\r\\n        uint256 indexed subscriptionId,\\r\\n        address indexed payer,\\r\\n        address indexed recipient,\\r\\n        uint256 amount,\\r\\n        uint256 timestamp\\r\\n    );\\r\\n\\r\\n    event SubscriptionCancelled(\\r\\n        uint256 indexed subscriptionId,\\r\\n        address indexed payer\\r\\n    );\\r\\n\\r\\n    // Subscription Data\\r\\n    struct Subscription {\\r\\n        address payer;\\r\\n        address recipient;\\r\\n        uint256 amount;\\r\\n        uint256 paymentDate;\\r\\n        bool paid;\\r\\n        bool cancelled;\\r\\n        string description; // \\\"Netflix Nov 2025\\\"\\r\\n    }\\r\\n\\r\\n    // State\\r\\n    uint256 private subCounter;\\r\\n    mapping(uint256 => Subscription) public subscriptions;\\r\\n    mapping(address => uint256[]) public userSubscriptions;\\r\\n\\r\\n    // USDC ERC-20 contract on Arc Testnet\\r\\n    // Get actual address from: https://docs.arc.network/arc/references/contract-addresses\\r\\n    constructor(address _usdc) {\\r\\n        if (_usdc == address(0)) revert InvalidRecipient();\\r\\n        USDC = IERC20(_usdc);\\r\\n    }\\r\\n\\r\\n    /**\\r\\n     * @notice Create scheduled payment (AI creates multiple for \\\"recurring\\\")\\r\\n     * @param recipient Who receives the payment\\r\\n     * @param amount How much USDC to send\\r\\n     * @param paymentDate When to send (unix timestamp)\\r\\n     * @param description Payment description for receipts\\r\\n     * @return subscriptionId The created subscription ID\\r\\n     */\\r\\n    function schedulePayment(\\r\\n        address recipient,\\r\\n        uint256 amount,\\r\\n        uint256 paymentDate,\\r\\n        string calldata description\\r\\n    ) external returns (uint256 subscriptionId) {\\r\\n        // Validate inputs\\r\\n        if (recipient == address(0)) revert InvalidRecipient();\\r\\n        if (amount == 0) revert InvalidAmount();\\r\\n        if (paymentDate <= block.timestamp) revert InvalidDate();\\r\\n\\r\\n        // Create subscription\\r\\n        subCounter++;\\r\\n        subscriptionId = subCounter;\\r\\n\\r\\n        subscriptions[subscriptionId] = Subscription({\\r\\n            payer: msg.sender,\\r\\n            recipient: recipient,\\r\\n            amount: amount,\\r\\n            paymentDate: paymentDate,\\r\\n            paid: false,\\r\\n            cancelled: false,\\r\\n            description: description\\r\\n        });\\r\\n\\r\\n        userSubscriptions[msg.sender].push(subscriptionId);\\r\\n\\r\\n        emit SubscriptionCreated(\\r\\n            subscriptionId,\\r\\n            msg.sender,\\r\\n            recipient,\\r\\n            amount,\\r\\n            paymentDate,\\r\\n            description\\r\\n        );\\r\\n    }\\r\\n\\r\\n   function payNow(\\r\\n    address recipient,\\r\\n    uint256 amount,\\r\\n    string calldata description\\r\\n) external returns (uint256 subscriptionId) {\\r\\n    // Validate inputs\\r\\n    if (recipient == address(0)) revert InvalidRecipient();\\r\\n    if (amount == 0) revert InvalidAmount();\\r\\n\\r\\n    // Check balance\\r\\n    if (USDC.balanceOf(msg.sender) < amount) revert InsufficientBalance();\\r\\n\\r\\n    // Create subscription record\\r\\n    subCounter++;\\r\\n    subscriptionId = subCounter;\\r\\n\\r\\n    subscriptions[subscriptionId] = Subscription({\\r\\n        payer: msg.sender,\\r\\n        recipient: recipient,\\r\\n        amount: amount,\\r\\n        paymentDate: block.timestamp,\\r\\n        paid: true, // Marked as paid immediately\\r\\n        cancelled: false,\\r\\n        description: description\\r\\n    });\\r\\n\\r\\n    userSubscriptions[msg.sender].push(subscriptionId);\\r\\n\\r\\n    // Execute USDC transfer\\r\\n    bool success = USDC.transferFrom(msg.sender, recipient, amount);\\r\\n    if (!success) revert TransferFailed();\\r\\n\\r\\n    emit SubscriptionCreated(\\r\\n        subscriptionId,\\r\\n        msg.sender,\\r\\n        recipient,\\r\\n        amount,\\r\\n        block.timestamp,\\r\\n        description\\r\\n    );\\r\\n\\r\\n    emit PaymentExecuted(\\r\\n        subscriptionId,\\r\\n        msg.sender,\\r\\n        recipient,\\r\\n        amount,\\r\\n        block.timestamp\\r\\n    );\\r\\n}\\r\\n\\r\\n    /**\\r\\n     * @notice Execute the scheduled payment (anyone can call when due)\\r\\n     * @param subscriptionId The subscription to execute\\r\\n     */\\r\\n    function executePayment(uint256 subscriptionId) external {\\r\\n        Subscription storage sub = subscriptions[subscriptionId];\\r\\n\\r\\n        // Validate\\r\\n        if (sub.payer == address(0)) revert SubscriptionNotFound();\\r\\n        if (sub.paid) revert AlreadyPaid();\\r\\n        if (sub.cancelled) revert Unauthorized();\\r\\n        if (block.timestamp < sub.paymentDate) revert NotYetDue();\\r\\n\\r\\n        // Check balance\\r\\n        if (USDC.balanceOf(sub.payer) < sub.amount) revert InsufficientBalance();\\r\\n\\r\\n        // Mark as paid first (reentrancy protection)\\r\\n        sub.paid = true;\\r\\n\\r\\n        // Execute USDC transfer\\r\\n        bool success = USDC.transferFrom(sub.payer, sub.recipient, sub.amount);\\r\\n        if (!success) revert TransferFailed();\\r\\n\\r\\n        emit PaymentExecuted(\\r\\n            subscriptionId,\\r\\n            sub.payer,\\r\\n            sub.recipient,\\r\\n            sub.amount,\\r\\n            block.timestamp\\r\\n        );\\r\\n    }\\r\\n\\r\\n    /**\\r\\n     * @notice Cancel a scheduled payment (only payer)\\r\\n     * @param subscriptionId The subscription to cancel\\r\\n     */\\r\\n    function cancelSubscription(uint256 subscriptionId) external {\\r\\n        Subscription storage sub = subscriptions[subscriptionId];\\r\\n\\r\\n        if (sub.payer == address(0)) revert SubscriptionNotFound();\\r\\n        if (sub.payer != msg.sender) revert Unauthorized();\\r\\n        if (sub.paid) revert AlreadyPaid();\\r\\n\\r\\n        sub.cancelled = true;\\r\\n\\r\\n        emit SubscriptionCancelled(subscriptionId, msg.sender);\\r\\n    }\\r\\n\\r\\n    /**\\r\\n     * @notice Batch create multiple scheduled payments (for recurring setup)\\r\\n     * @param recipient Payment recipient\\r\\n     * @param amount Amount per payment\\r\\n     * @param startDate First payment date\\r\\n     * @param intervalDays Days between payments (30 = monthly)\\r\\n     * @param count How many payments to schedule\\r\\n     * @param description Base description\\r\\n     */\\r\\n    function batchSchedulePayments(\\r\\n        address recipient,\\r\\n        uint256 amount,\\r\\n        uint256 startDate,\\r\\n        uint256 intervalDays,\\r\\n        uint256 count,\\r\\n        string calldata description\\r\\n    ) external returns (uint256[] memory subscriptionIds) {\\r\\n        if (recipient == address(0)) revert InvalidRecipient();\\r\\n        if (amount == 0) revert InvalidAmount();\\r\\n        if (startDate <= block.timestamp) revert InvalidDate();\\r\\n        if (count == 0 || count > 24) revert InvalidAmount(); // Max 2 years\\r\\n\\r\\n        subscriptionIds = new uint256[](count);\\r\\n\\r\\n        for (uint256 i = 0; i < count; i++) {\\r\\n            subCounter++;\\r\\n            uint256 subId = subCounter;\\r\\n            uint256 paymentDate = startDate + (i * intervalDays * 1 days);\\r\\n\\r\\n            subscriptions[subId] = Subscription({\\r\\n                payer: msg.sender,\\r\\n                recipient: recipient,\\r\\n                amount: amount,\\r\\n                paymentDate: paymentDate,\\r\\n                paid: false,\\r\\n                cancelled: false,\\r\\n                description: string(abi.encodePacked(description, \\\" #\\\", _toString(i + 1)))\\r\\n            });\\r\\n\\r\\n            userSubscriptions[msg.sender].push(subId);\\r\\n            subscriptionIds[i] = subId;\\r\\n\\r\\n            emit SubscriptionCreated(\\r\\n                subId,\\r\\n                msg.sender,\\r\\n                recipient,\\r\\n                amount,\\r\\n                paymentDate,\\r\\n                subscriptions[subId].description\\r\\n            );\\r\\n        }\\r\\n    }\\r\\n\\r\\n    /**\\r\\n     * @notice Check if payment is ready to execute\\r\\n     */\\r\\n    function canExecute(uint256 subscriptionId) external view returns (bool) {\\r\\n        Subscription memory sub = subscriptions[subscriptionId];\\r\\n        \\r\\n        if (sub.payer == address(0) || sub.paid || sub.cancelled) return false;\\r\\n        return block.timestamp >= sub.paymentDate;\\r\\n    }\\r\\n\\r\\n    /**\\r\\n     * @notice Get subscription details\\r\\n     */\\r\\n    function getSubscription(uint256 subscriptionId) \\r\\n        external \\r\\n        view \\r\\n        returns (\\r\\n            address payer,\\r\\n            address recipient,\\r\\n            uint256 amount,\\r\\n            uint256 paymentDate,\\r\\n            bool paid,\\r\\n            bool cancelled,\\r\\n            string memory description\\r\\n        ) \\r\\n    {\\r\\n        Subscription memory sub = subscriptions[subscriptionId];\\r\\n        if (sub.payer == address(0)) revert SubscriptionNotFound();\\r\\n        \\r\\n        return (\\r\\n            sub.payer,\\r\\n            sub.recipient,\\r\\n            sub.amount,\\r\\n            sub.paymentDate,\\r\\n            sub.paid,\\r\\n            sub.cancelled,\\r\\n            sub.description\\r\\n        );\\r\\n    }\\r\\n\\r\\n    /**\\r\\n     * @notice Get all subscriptions for a user\\r\\n     */\\r\\n    function getUserSubscriptions(address user) external view returns (uint256[] memory) {\\r\\n        return userSubscriptions[user];\\r\\n    }\\r\\n\\r\\n    /**\\r\\n     * @notice Get pending (unpaid, uncancelled, due soon) subscriptions\\r\\n     */\\r\\n    function getPendingSubscriptions(address user) external view returns (uint256[] memory) {\\r\\n        uint256[] memory allSubs = userSubscriptions[user];\\r\\n        uint256 count = 0;\\r\\n\\r\\n        // Count pending\\r\\n        for (uint256 i = 0; i < allSubs.length; i++) {\\r\\n            Subscription memory sub = subscriptions[allSubs[i]];\\r\\n            if (!sub.paid && !sub.cancelled && block.timestamp >= sub.paymentDate) {\\r\\n                count++;\\r\\n            }\\r\\n        }\\r\\n\\r\\n        // Build array\\r\\n        uint256[] memory pending = new uint256[](count);\\r\\n        uint256 index = 0;\\r\\n        for (uint256 i = 0; i < allSubs.length; i++) {\\r\\n            Subscription memory sub = subscriptions[allSubs[i]];\\r\\n            if (!sub.paid && !sub.cancelled && block.timestamp >= sub.paymentDate) {\\r\\n                pending[index] = allSubs[i];\\r\\n                index++;\\r\\n            }\\r\\n        }\\r\\n\\r\\n        return pending;\\r\\n    }\\r\\n\\r\\n    /**\\r\\n     * @notice Get total subscriptions created\\r\\n     */\\r\\n    function getTotalSubscriptions() external view returns (uint256) {\\r\\n        return subCounter;\\r\\n    }\\r\\n\\r\\n    // Helper: uint to string\\r\\n    function _toString(uint256 value) internal pure returns (string memory) {\\r\\n        if (value == 0) return \\\"0\\\";\\r\\n        uint256 temp = value;\\r\\n        uint256 digits;\\r\\n        while (temp != 0) {\\r\\n            digits++;\\r\\n            temp /= 10;\\r\\n        }\\r\\n        bytes memory buffer = new bytes(digits);\\r\\n        while (value != 0) {\\r\\n            digits -= 1;\\r\\n            buffer[digits] = bytes1(uint8(48 + uint256(value % 10)));\\r\\n            value /= 10;\\r\\n        }\\r\\n        return string(buffer);\\r\\n    }\\r\\n}\",\"keccak256\":\"0x771cefe7a99fd70ced8ad59c595744452adb9969b3990f6ab603d3ab8befc6ef\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x60a060405234801561001057600080fd5b5060405162001ed038038062001ed083398101604081905261003191610069565b6001600160a01b03811661005857604051634e46966960e11b815260040160405180910390fd5b6001600160a01b0316608052610099565b60006020828403121561007b57600080fd5b81516001600160a01b038116811461009257600080fd5b9392505050565b608051611dff620000d16000396000818161019b015281816106ee015281816107c901528181610e2301526110420152611dff6000f3fe608060405234801561001057600080fd5b50600436106100cf5760003560e01c806367b3fda71161008c57806390f0536a1161006657806390f0536a146101d5578063c95d6edc146101e8578063cc63604a146101fb578063dc311dd31461021e57600080fd5b806367b3fda714610170578063831c42421461018357806389a302711461019657600080fd5b80630c7b0afe146100d45780631387fbab146100fd578063162a0cf81461010f57806321235083146101245780632d5bbf60146101375780632e6ca5881461015d575b600080fd5b6100e76100e236600461179d565b610231565b6040516100f491906117bf565b60405180910390f35b6000545b6040519081526020016100f4565b61012261011d366004611803565b61061d565b005b610122610132366004611803565b6108b3565b61014a610145366004611803565b61097a565b6040516100f49796959493929190611840565b6100e761016b36600461179d565b610a57565b6100e761017e3660046118fa565b610ac3565b610101610191366004611975565b610dc2565b6101bd7f000000000000000000000000000000000000000000000000000000000000000081565b6040516001600160a01b0390911681526020016100f4565b6101016101e33660046119cf565b611171565b6101016101f6366004611a37565b61138b565b61020e610209366004611803565b6113bc565b60405190151581526020016100f4565b61014a61022c366004611803565b611501565b6001600160a01b038116600090815260026020908152604080832080548251818502810185019093528083526060949383018282801561029057602002820191906000526020600020905b81548152602001906001019080831161027c575b505050505090506000805b8251811015610415576000600160008584815181106102bc576102bc611a61565b6020908102919091018101518252818101929092526040908101600020815160e08101835281546001600160a01b0390811682526001830154169381019390935260028101549183019190915260038101546060830152600481015460ff8082161515608085015261010090910416151560a083015260058101805460c08401919061034790611a77565b80601f016020809104026020016040519081016040528092919081815260200182805461037390611a77565b80156103c05780601f10610395576101008083540402835291602001916103c0565b820191906000526020600020905b8154815290600101906020018083116103a357829003601f168201915b505050505081525050905080608001511580156103df57508060a00151155b80156103ef575080606001514210155b1561040257826103fe81611ac7565b9350505b508061040d81611ac7565b91505061029b565b5060008167ffffffffffffffff81111561043157610431611ae0565b60405190808252806020026020018201604052801561045a578160200160208202803683370190505b5090506000805b84518110156106125760006001600087848151811061048257610482611a61565b6020908102919091018101518252818101929092526040908101600020815160e08101835281546001600160a01b0390811682526001830154169381019390935260028101549183019190915260038101546060830152600481015460ff8082161515608085015261010090910416151560a083015260058101805460c08401919061050d90611a77565b80601f016020809104026020016040519081016040528092919081815260200182805461053990611a77565b80156105865780601f1061055b57610100808354040283529160200191610586565b820191906000526020600020905b81548152906001019060200180831161056957829003601f168201915b505050505081525050905080608001511580156105a557508060a00151155b80156105b5575080606001514210155b156105ff578582815181106105cc576105cc611a61565b60200260200101518484815181106105e6576105e6611a61565b6020908102919091010152826105fb81611ac7565b9350505b508061060a81611ac7565b915050610461565b509095945050505050565b600081815260016020526040902080546001600160a01b031661065357604051631a00354f60e01b815260040160405180910390fd5b600481015460ff161561067957604051630d70a0e360e41b815260040160405180910390fd5b6004810154610100900460ff16156106a3576040516282b42960e81b815260040160405180910390fd5b80600301544210156106c857604051633f164d9960e01b815260040160405180910390fd5b600281015481546040516370a0823160e01b81526001600160a01b0391821660048201527f0000000000000000000000000000000000000000000000000000000000000000909116906370a0823190602401602060405180830381865afa158015610737573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061075b9190611af6565b101561077a57604051631e9acf1760e31b815260040160405180910390fd5b6004818101805460ff1916600190811790915582549083015460028401546040516323b872dd60e01b81526001600160a01b0393841694810194909452908216602484015260448301526000917f0000000000000000000000000000000000000000000000000000000000000000909116906323b872dd906064016020604051808303816000875af1158015610814573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906108389190611b0f565b905080610858576040516312171d8360e31b815260040160405180910390fd5b600182015482546002840154604080519182524260208301526001600160a01b03938416939092169186917f64dcc45c8bf26314103700cb3e251d47cdee628e30b916bbe4ad32ab67350bc6910160405180910390a4505050565b600081815260016020526040902080546001600160a01b03166108e957604051631a00354f60e01b815260040160405180910390fd5b80546001600160a01b03163314610912576040516282b42960e81b815260040160405180910390fd5b600481015460ff161561093857604051630d70a0e360e41b815260040160405180910390fd5b60048101805461ff001916610100179055604051339083907f533734a768f070673b823079652464b7e002bb51cdf15e3108209f397425225f90600090a35050565b60016020819052600091825260409091208054918101546002820154600383015460048401546005850180546001600160a01b0397881697909516959394929360ff8084169461010090940416929091906109d490611a77565b80601f0160208091040260200160405190810160405280929190818152602001828054610a0090611a77565b8015610a4d5780601f10610a2257610100808354040283529160200191610a4d565b820191906000526020600020905b815481529060010190602001808311610a3057829003601f168201915b5050505050905087565b6001600160a01b038116600090815260026020908152604091829020805483518184028101840190945280845260609392830182828015610ab757602002820191906000526020600020905b815481526020019060010190808311610aa3575b50505050509050919050565b60606001600160a01b038816610aec57604051634e46966960e11b815260040160405180910390fd5b86600003610b0d5760405163162908e360e11b815260040160405180910390fd5b428611610b2d576040516381bf7f6760e01b815260040160405180910390fd5b831580610b3a5750601884115b15610b585760405163162908e360e11b815260040160405180910390fd5b8367ffffffffffffffff811115610b7157610b71611ae0565b604051908082528060200260200182016040528015610b9a578160200160208202803683370190505b50905060005b84811015610db657600080549080610bb783611ac7565b90915550506000805490610bcb8884611b31565b610bd89062015180611b31565b610be2908a611b4e565b6040805160e0810182523381526001600160a01b038e1660208201529081018c90526060810182905260006080820181905260a082015290915060c081018787610c35610c30886001611b4e565b611678565b604051602001610c4793929190611b61565b60408051601f19818403018152918152915260008481526001602081815291839020845181546001600160a01b039182166001600160a01b031991821617835593860151928201805493909116929093169190911790915590820151600282015560608201516003820155608082015160048201805460a085015115156101000261ff00199315159390931661ffff199091161791909117905560c08201516005820190610cf59082611be1565b5050336000908152600260209081526040822080546001810182559083529120018390555083518290859085908110610d3057610d30611a61565b6020026020010181815250508a6001600160a01b0316336001600160a01b0316837f1c345940392ad25b8a8e47bcc10a218083414a37048ffcac038597ddc392840a8d8560016000898152602001908152602001600020600501604051610d9993929190611ca1565b60405180910390a450508080610dae90611ac7565b915050610ba0565b50979650505050505050565b60006001600160a01b038516610deb57604051634e46966960e11b815260040160405180910390fd5b83600003610e0c5760405163162908e360e11b815260040160405180910390fd5b6040516370a0823160e01b815233600482015284907f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316906370a0823190602401602060405180830381865afa158015610e72573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610e969190611af6565b1015610eb557604051631e9acf1760e31b815260040160405180910390fd5b600080549080610ec483611ac7565b919050555060005490506040518060e00160405280336001600160a01b03168152602001866001600160a01b0316815260200185815260200142815260200160011515815260200160001515815260200184848080601f016020809104026020016040519081016040528093929190818152602001838380828437600092018290525093909452505083815260016020818152604092839020855181546001600160a01b039182166001600160a01b0319918216178355928701519382018054949091169390921692909217905590830151600282015560608301516003820155608083015160048201805460a086015115156101000261ff00199315159390931661ffff199091161791909117905560c08301519091506005820190610feb9082611be1565b50503360008181526002602090815260408083208054600181018255908452918320909101859055516323b872dd60e01b815260048101929092526001600160a01b038881166024840152604483018890529092507f000000000000000000000000000000000000000000000000000000000000000016906323b872dd906064016020604051808303816000875af115801561108b573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906110af9190611b0f565b9050806110cf576040516312171d8360e31b815260040160405180910390fd5b856001600160a01b0316336001600160a01b0316837f1c345940392ad25b8a8e47bcc10a218083414a37048ffcac038597ddc392840a884289896040516111199493929190611d3b565b60405180910390a4604080518681524260208201526001600160a01b03881691339185917f64dcc45c8bf26314103700cb3e251d47cdee628e30b916bbe4ad32ab67350bc6910160405180910390a450949350505050565b60006001600160a01b03861661119a57604051634e46966960e11b815260040160405180910390fd5b846000036111bb5760405163162908e360e11b815260040160405180910390fd5b4284116111db576040516381bf7f6760e01b815260040160405180910390fd5b6000805490806111ea83611ac7565b919050555060005490506040518060e00160405280336001600160a01b03168152602001876001600160a01b0316815260200186815260200185815260200160001515815260200160001515815260200184848080601f016020809104026020016040519081016040528093929190818152602001838380828437600092018290525093909452505083815260016020818152604092839020855181546001600160a01b039182166001600160a01b0319918216178355928701519382018054949091169390921692909217905590830151600282015560608301516003820155608083015160048201805460a086015115156101000261ff00199315159390931661ffff199091161791909117905560c083015190915060058201906113119082611be1565b505033600081815260026020908152604080832080546001810182559084529190922001849055516001600160a01b038916925083907f1c345940392ad25b8a8e47bcc10a218083414a37048ffcac038597ddc392840a9061137a908a908a908a908a90611d3b565b60405180910390a495945050505050565b600260205281600052604060002081815481106113a757600080fd5b90600052602060002001600091509150505481565b6000818152600160208181526040808420815160e08101835281546001600160a01b039081168252948201549094169284019290925260028201549083015260038101546060830152600481015460ff8082161515608085015261010090910416151560a08301526005810180548493929160c084019161143c90611a77565b80601f016020809104026020016040519081016040528092919081815260200182805461146890611a77565b80156114b55780601f1061148a576101008083540402835291602001916114b5565b820191906000526020600020905b81548152906001019060200180831161149857829003601f168201915b5050509190925250508151919250506001600160a01b031615806114da575080608001515b806114e657508060a001515b156114f45750600092915050565b6060015142101592915050565b6000818152600160208181526040808420815160e08101835281546001600160a01b03908116825294820154909416928401929092526002820154908301526003810154606083810191909152600482015460ff8082161515608086015261010090910416151560a084015260058201805485948594859485948594919385939092909160c084019161159390611a77565b80601f01602080910402602001604051908101604052809291908181526020018280546115bf90611a77565b801561160c5780601f106115e15761010080835404028352916020019161160c565b820191906000526020600020905b8154815290600101906020018083116115ef57829003601f168201915b5050509190925250508151919250506001600160a01b031661164157604051631a00354f60e01b815260040160405180910390fd5b8051602082015160408301516060840151608085015160a086015160c090960151949e939d50919b50995097509195509350915050565b60608160000361169f5750506040805180820190915260018152600360fc1b602082015290565b8160005b81156116c957806116b381611ac7565b91506116c29050600a83611d8e565b91506116a3565b60008167ffffffffffffffff8111156116e4576116e4611ae0565b6040519080825280601f01601f19166020018201604052801561170e576020820181803683370190505b5090505b841561177957611723600183611da2565b9150611730600a86611db5565b61173b906030611b4e565b60f81b81838151811061175057611750611a61565b60200101906001600160f81b031916908160001a905350611772600a86611d8e565b9450611712565b949350505050565b80356001600160a01b038116811461179857600080fd5b919050565b6000602082840312156117af57600080fd5b6117b882611781565b9392505050565b6020808252825182820181905260009190848201906040850190845b818110156117f7578351835292840192918401916001016117db565b50909695505050505050565b60006020828403121561181557600080fd5b5035919050565b60005b8381101561183757818101518382015260200161181f565b50506000910152565b600060018060a01b03808a168352808916602084015250866040830152856060830152841515608083015283151560a083015260e060c083015282518060e0840152610100611895828286016020880161181c565b80601f19601f8401168501019250505098975050505050505050565b60008083601f8401126118c357600080fd5b50813567ffffffffffffffff8111156118db57600080fd5b6020830191508360208285010111156118f357600080fd5b9250929050565b600080600080600080600060c0888a03121561191557600080fd5b61191e88611781565b96506020880135955060408801359450606088013593506080880135925060a088013567ffffffffffffffff81111561195657600080fd5b6119628a828b016118b1565b989b979a50959850939692959293505050565b6000806000806060858703121561198b57600080fd5b61199485611781565b935060208501359250604085013567ffffffffffffffff8111156119b757600080fd5b6119c3878288016118b1565b95989497509550505050565b6000806000806000608086880312156119e757600080fd5b6119f086611781565b94506020860135935060408601359250606086013567ffffffffffffffff811115611a1a57600080fd5b611a26888289016118b1565b969995985093965092949392505050565b60008060408385031215611a4a57600080fd5b611a5383611781565b946020939093013593505050565b634e487b7160e01b600052603260045260246000fd5b600181811c90821680611a8b57607f821691505b602082108103611aab57634e487b7160e01b600052602260045260246000fd5b50919050565b634e487b7160e01b600052601160045260246000fd5b600060018201611ad957611ad9611ab1565b5060010190565b634e487b7160e01b600052604160045260246000fd5b600060208284031215611b0857600080fd5b5051919050565b600060208284031215611b2157600080fd5b815180151581146117b857600080fd5b8082028115828204841417611b4857611b48611ab1565b92915050565b80820180821115611b4857611b48611ab1565b82848237600083820161202360f01b81528351611b8581600284016020880161181c565b0160020195945050505050565b601f821115611bdc57600081815260208120601f850160051c81016020861015611bb95750805b601f850160051c820191505b81811015611bd857828155600101611bc5565b5050505b505050565b815167ffffffffffffffff811115611bfb57611bfb611ae0565b611c0f81611c098454611a77565b84611b92565b602080601f831160018114611c445760008415611c2c5750858301515b600019600386901b1c1916600185901b178555611bd8565b600085815260208120601f198616915b82811015611c7357888601518255948401946001909101908401611c54565b5085821015611c915787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b8381526000602084818401526060604084015260008454611cc181611a77565b8060608701526080600180841660008114611ce35760018114611cfd57611d2b565b60ff1985168984015283151560051b890183019550611d2b565b896000528660002060005b85811015611d235781548b8201860152908301908801611d08565b8a0184019650505b50939a9950505050505050505050565b84815283602082015260606040820152816060820152818360808301376000818301608090810191909152601f909201601f191601019392505050565b634e487b7160e01b600052601260045260246000fd5b600082611d9d57611d9d611d78565b500490565b81810381811115611b4857611b48611ab1565b600082611dc457611dc4611d78565b50069056fea2646970667358221220a0788865deebf680db6e37baa4cae9b40a38b62bbf3afd72917caf5f110a878864736f6c63430008140033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100cf5760003560e01c806367b3fda71161008c57806390f0536a1161006657806390f0536a146101d5578063c95d6edc146101e8578063cc63604a146101fb578063dc311dd31461021e57600080fd5b806367b3fda714610170578063831c42421461018357806389a302711461019657600080fd5b80630c7b0afe146100d45780631387fbab146100fd578063162a0cf81461010f57806321235083146101245780632d5bbf60146101375780632e6ca5881461015d575b600080fd5b6100e76100e236600461179d565b610231565b6040516100f491906117bf565b60405180910390f35b6000545b6040519081526020016100f4565b61012261011d366004611803565b61061d565b005b610122610132366004611803565b6108b3565b61014a610145366004611803565b61097a565b6040516100f49796959493929190611840565b6100e761016b36600461179d565b610a57565b6100e761017e3660046118fa565b610ac3565b610101610191366004611975565b610dc2565b6101bd7f000000000000000000000000000000000000000000000000000000000000000081565b6040516001600160a01b0390911681526020016100f4565b6101016101e33660046119cf565b611171565b6101016101f6366004611a37565b61138b565b61020e610209366004611803565b6113bc565b60405190151581526020016100f4565b61014a61022c366004611803565b611501565b6001600160a01b038116600090815260026020908152604080832080548251818502810185019093528083526060949383018282801561029057602002820191906000526020600020905b81548152602001906001019080831161027c575b505050505090506000805b8251811015610415576000600160008584815181106102bc576102bc611a61565b6020908102919091018101518252818101929092526040908101600020815160e08101835281546001600160a01b0390811682526001830154169381019390935260028101549183019190915260038101546060830152600481015460ff8082161515608085015261010090910416151560a083015260058101805460c08401919061034790611a77565b80601f016020809104026020016040519081016040528092919081815260200182805461037390611a77565b80156103c05780601f10610395576101008083540402835291602001916103c0565b820191906000526020600020905b8154815290600101906020018083116103a357829003601f168201915b505050505081525050905080608001511580156103df57508060a00151155b80156103ef575080606001514210155b1561040257826103fe81611ac7565b9350505b508061040d81611ac7565b91505061029b565b5060008167ffffffffffffffff81111561043157610431611ae0565b60405190808252806020026020018201604052801561045a578160200160208202803683370190505b5090506000805b84518110156106125760006001600087848151811061048257610482611a61565b6020908102919091018101518252818101929092526040908101600020815160e08101835281546001600160a01b0390811682526001830154169381019390935260028101549183019190915260038101546060830152600481015460ff8082161515608085015261010090910416151560a083015260058101805460c08401919061050d90611a77565b80601f016020809104026020016040519081016040528092919081815260200182805461053990611a77565b80156105865780601f1061055b57610100808354040283529160200191610586565b820191906000526020600020905b81548152906001019060200180831161056957829003601f168201915b505050505081525050905080608001511580156105a557508060a00151155b80156105b5575080606001514210155b156105ff578582815181106105cc576105cc611a61565b60200260200101518484815181106105e6576105e6611a61565b6020908102919091010152826105fb81611ac7565b9350505b508061060a81611ac7565b915050610461565b509095945050505050565b600081815260016020526040902080546001600160a01b031661065357604051631a00354f60e01b815260040160405180910390fd5b600481015460ff161561067957604051630d70a0e360e41b815260040160405180910390fd5b6004810154610100900460ff16156106a3576040516282b42960e81b815260040160405180910390fd5b80600301544210156106c857604051633f164d9960e01b815260040160405180910390fd5b600281015481546040516370a0823160e01b81526001600160a01b0391821660048201527f0000000000000000000000000000000000000000000000000000000000000000909116906370a0823190602401602060405180830381865afa158015610737573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061075b9190611af6565b101561077a57604051631e9acf1760e31b815260040160405180910390fd5b6004818101805460ff1916600190811790915582549083015460028401546040516323b872dd60e01b81526001600160a01b0393841694810194909452908216602484015260448301526000917f0000000000000000000000000000000000000000000000000000000000000000909116906323b872dd906064016020604051808303816000875af1158015610814573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906108389190611b0f565b905080610858576040516312171d8360e31b815260040160405180910390fd5b600182015482546002840154604080519182524260208301526001600160a01b03938416939092169186917f64dcc45c8bf26314103700cb3e251d47cdee628e30b916bbe4ad32ab67350bc6910160405180910390a4505050565b600081815260016020526040902080546001600160a01b03166108e957604051631a00354f60e01b815260040160405180910390fd5b80546001600160a01b03163314610912576040516282b42960e81b815260040160405180910390fd5b600481015460ff161561093857604051630d70a0e360e41b815260040160405180910390fd5b60048101805461ff001916610100179055604051339083907f533734a768f070673b823079652464b7e002bb51cdf15e3108209f397425225f90600090a35050565b60016020819052600091825260409091208054918101546002820154600383015460048401546005850180546001600160a01b0397881697909516959394929360ff8084169461010090940416929091906109d490611a77565b80601f0160208091040260200160405190810160405280929190818152602001828054610a0090611a77565b8015610a4d5780601f10610a2257610100808354040283529160200191610a4d565b820191906000526020600020905b815481529060010190602001808311610a3057829003601f168201915b5050505050905087565b6001600160a01b038116600090815260026020908152604091829020805483518184028101840190945280845260609392830182828015610ab757602002820191906000526020600020905b815481526020019060010190808311610aa3575b50505050509050919050565b60606001600160a01b038816610aec57604051634e46966960e11b815260040160405180910390fd5b86600003610b0d5760405163162908e360e11b815260040160405180910390fd5b428611610b2d576040516381bf7f6760e01b815260040160405180910390fd5b831580610b3a5750601884115b15610b585760405163162908e360e11b815260040160405180910390fd5b8367ffffffffffffffff811115610b7157610b71611ae0565b604051908082528060200260200182016040528015610b9a578160200160208202803683370190505b50905060005b84811015610db657600080549080610bb783611ac7565b90915550506000805490610bcb8884611b31565b610bd89062015180611b31565b610be2908a611b4e565b6040805160e0810182523381526001600160a01b038e1660208201529081018c90526060810182905260006080820181905260a082015290915060c081018787610c35610c30886001611b4e565b611678565b604051602001610c4793929190611b61565b60408051601f19818403018152918152915260008481526001602081815291839020845181546001600160a01b039182166001600160a01b031991821617835593860151928201805493909116929093169190911790915590820151600282015560608201516003820155608082015160048201805460a085015115156101000261ff00199315159390931661ffff199091161791909117905560c08201516005820190610cf59082611be1565b5050336000908152600260209081526040822080546001810182559083529120018390555083518290859085908110610d3057610d30611a61565b6020026020010181815250508a6001600160a01b0316336001600160a01b0316837f1c345940392ad25b8a8e47bcc10a218083414a37048ffcac038597ddc392840a8d8560016000898152602001908152602001600020600501604051610d9993929190611ca1565b60405180910390a450508080610dae90611ac7565b915050610ba0565b50979650505050505050565b60006001600160a01b038516610deb57604051634e46966960e11b815260040160405180910390fd5b83600003610e0c5760405163162908e360e11b815260040160405180910390fd5b6040516370a0823160e01b815233600482015284907f00000000000000000000000000000000000000000000000000000000000000006001600160a01b0316906370a0823190602401602060405180830381865afa158015610e72573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610e969190611af6565b1015610eb557604051631e9acf1760e31b815260040160405180910390fd5b600080549080610ec483611ac7565b919050555060005490506040518060e00160405280336001600160a01b03168152602001866001600160a01b0316815260200185815260200142815260200160011515815260200160001515815260200184848080601f016020809104026020016040519081016040528093929190818152602001838380828437600092018290525093909452505083815260016020818152604092839020855181546001600160a01b039182166001600160a01b0319918216178355928701519382018054949091169390921692909217905590830151600282015560608301516003820155608083015160048201805460a086015115156101000261ff00199315159390931661ffff199091161791909117905560c08301519091506005820190610feb9082611be1565b50503360008181526002602090815260408083208054600181018255908452918320909101859055516323b872dd60e01b815260048101929092526001600160a01b038881166024840152604483018890529092507f000000000000000000000000000000000000000000000000000000000000000016906323b872dd906064016020604051808303816000875af115801561108b573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906110af9190611b0f565b9050806110cf576040516312171d8360e31b815260040160405180910390fd5b856001600160a01b0316336001600160a01b0316837f1c345940392ad25b8a8e47bcc10a218083414a37048ffcac038597ddc392840a884289896040516111199493929190611d3b565b60405180910390a4604080518681524260208201526001600160a01b03881691339185917f64dcc45c8bf26314103700cb3e251d47cdee628e30b916bbe4ad32ab67350bc6910160405180910390a450949350505050565b60006001600160a01b03861661119a57604051634e46966960e11b815260040160405180910390fd5b846000036111bb5760405163162908e360e11b815260040160405180910390fd5b4284116111db576040516381bf7f6760e01b815260040160405180910390fd5b6000805490806111ea83611ac7565b919050555060005490506040518060e00160405280336001600160a01b03168152602001876001600160a01b0316815260200186815260200185815260200160001515815260200160001515815260200184848080601f016020809104026020016040519081016040528093929190818152602001838380828437600092018290525093909452505083815260016020818152604092839020855181546001600160a01b039182166001600160a01b0319918216178355928701519382018054949091169390921692909217905590830151600282015560608301516003820155608083015160048201805460a086015115156101000261ff00199315159390931661ffff199091161791909117905560c083015190915060058201906113119082611be1565b505033600081815260026020908152604080832080546001810182559084529190922001849055516001600160a01b038916925083907f1c345940392ad25b8a8e47bcc10a218083414a37048ffcac038597ddc392840a9061137a908a908a908a908a90611d3b565b60405180910390a495945050505050565b600260205281600052604060002081815481106113a757600080fd5b90600052602060002001600091509150505481565b6000818152600160208181526040808420815160e08101835281546001600160a01b039081168252948201549094169284019290925260028201549083015260038101546060830152600481015460ff8082161515608085015261010090910416151560a08301526005810180548493929160c084019161143c90611a77565b80601f016020809104026020016040519081016040528092919081815260200182805461146890611a77565b80156114b55780601f1061148a576101008083540402835291602001916114b5565b820191906000526020600020905b81548152906001019060200180831161149857829003601f168201915b5050509190925250508151919250506001600160a01b031615806114da575080608001515b806114e657508060a001515b156114f45750600092915050565b6060015142101592915050565b6000818152600160208181526040808420815160e08101835281546001600160a01b03908116825294820154909416928401929092526002820154908301526003810154606083810191909152600482015460ff8082161515608086015261010090910416151560a084015260058201805485948594859485948594919385939092909160c084019161159390611a77565b80601f01602080910402602001604051908101604052809291908181526020018280546115bf90611a77565b801561160c5780601f106115e15761010080835404028352916020019161160c565b820191906000526020600020905b8154815290600101906020018083116115ef57829003601f168201915b5050509190925250508151919250506001600160a01b031661164157604051631a00354f60e01b815260040160405180910390fd5b8051602082015160408301516060840151608085015160a086015160c090960151949e939d50919b50995097509195509350915050565b60608160000361169f5750506040805180820190915260018152600360fc1b602082015290565b8160005b81156116c957806116b381611ac7565b91506116c29050600a83611d8e565b91506116a3565b60008167ffffffffffffffff8111156116e4576116e4611ae0565b6040519080825280601f01601f19166020018201604052801561170e576020820181803683370190505b5090505b841561177957611723600183611da2565b9150611730600a86611db5565b61173b906030611b4e565b60f81b81838151811061175057611750611a61565b60200101906001600160f81b031916908160001a905350611772600a86611d8e565b9450611712565b949350505050565b80356001600160a01b038116811461179857600080fd5b919050565b6000602082840312156117af57600080fd5b6117b882611781565b9392505050565b6020808252825182820181905260009190848201906040850190845b818110156117f7578351835292840192918401916001016117db565b50909695505050505050565b60006020828403121561181557600080fd5b5035919050565b60005b8381101561183757818101518382015260200161181f565b50506000910152565b600060018060a01b03808a168352808916602084015250866040830152856060830152841515608083015283151560a083015260e060c083015282518060e0840152610100611895828286016020880161181c565b80601f19601f8401168501019250505098975050505050505050565b60008083601f8401126118c357600080fd5b50813567ffffffffffffffff8111156118db57600080fd5b6020830191508360208285010111156118f357600080fd5b9250929050565b600080600080600080600060c0888a03121561191557600080fd5b61191e88611781565b96506020880135955060408801359450606088013593506080880135925060a088013567ffffffffffffffff81111561195657600080fd5b6119628a828b016118b1565b989b979a50959850939692959293505050565b6000806000806060858703121561198b57600080fd5b61199485611781565b935060208501359250604085013567ffffffffffffffff8111156119b757600080fd5b6119c3878288016118b1565b95989497509550505050565b6000806000806000608086880312156119e757600080fd5b6119f086611781565b94506020860135935060408601359250606086013567ffffffffffffffff811115611a1a57600080fd5b611a26888289016118b1565b969995985093965092949392505050565b60008060408385031215611a4a57600080fd5b611a5383611781565b946020939093013593505050565b634e487b7160e01b600052603260045260246000fd5b600181811c90821680611a8b57607f821691505b602082108103611aab57634e487b7160e01b600052602260045260246000fd5b50919050565b634e487b7160e01b600052601160045260246000fd5b600060018201611ad957611ad9611ab1565b5060010190565b634e487b7160e01b600052604160045260246000fd5b600060208284031215611b0857600080fd5b5051919050565b600060208284031215611b2157600080fd5b815180151581146117b857600080fd5b8082028115828204841417611b4857611b48611ab1565b92915050565b80820180821115611b4857611b48611ab1565b82848237600083820161202360f01b81528351611b8581600284016020880161181c565b0160020195945050505050565b601f821115611bdc57600081815260208120601f850160051c81016020861015611bb95750805b601f850160051c820191505b81811015611bd857828155600101611bc5565b5050505b505050565b815167ffffffffffffffff811115611bfb57611bfb611ae0565b611c0f81611c098454611a77565b84611b92565b602080601f831160018114611c445760008415611c2c5750858301515b600019600386901b1c1916600185901b178555611bd8565b600085815260208120601f198616915b82811015611c7357888601518255948401946001909101908401611c54565b5085821015611c915787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b8381526000602084818401526060604084015260008454611cc181611a77565b8060608701526080600180841660008114611ce35760018114611cfd57611d2b565b60ff1985168984015283151560051b890183019550611d2b565b896000528660002060005b85811015611d235781548b8201860152908301908801611d08565b8a0184019650505b50939a9950505050505050505050565b84815283602082015260606040820152816060820152818360808301376000818301608090810191909152601f909201601f191601019392505050565b634e487b7160e01b600052601260045260246000fd5b600082611d9d57611d9d611d78565b500490565b81810381811115611b4857611b48611ab1565b600082611dc457611dc4611d78565b50069056fea2646970667358221220a0788865deebf680db6e37baa4cae9b40a38b62bbf3afd72917caf5f110a878864736f6c63430008140033",
+  "devdoc": {
+    "details": "AI agent creates multiple schedules for \"recurring\" effect",
+    "kind": "dev",
+    "methods": {
+      "batchSchedulePayments(address,uint256,uint256,uint256,uint256,string)": {
+        "params": {
+          "amount": "Amount per payment",
+          "count": "How many payments to schedule",
+          "description": "Base description",
+          "intervalDays": "Days between payments (30 = monthly)",
+          "recipient": "Payment recipient",
+          "startDate": "First payment date"
+        }
+      },
+      "cancelSubscription(uint256)": {
+        "params": {
+          "subscriptionId": "The subscription to cancel"
+        }
+      },
+      "executePayment(uint256)": {
+        "params": {
+          "subscriptionId": "The subscription to execute"
+        }
+      },
+      "schedulePayment(address,uint256,uint256,string)": {
+        "params": {
+          "amount": "How much USDC to send",
+          "description": "Payment description for receipts",
+          "paymentDate": "When to send (unix timestamp)",
+          "recipient": "Who receives the payment"
+        },
+        "returns": {
+          "subscriptionId": "The created subscription ID"
+        }
+      }
+    },
+    "title": "AgentPay Scheduled Payments",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "batchSchedulePayments(address,uint256,uint256,uint256,uint256,string)": {
+        "notice": "Batch create multiple scheduled payments (for recurring setup)"
+      },
+      "canExecute(uint256)": {
+        "notice": "Check if payment is ready to execute"
+      },
+      "cancelSubscription(uint256)": {
+        "notice": "Cancel a scheduled payment (only payer)"
+      },
+      "executePayment(uint256)": {
+        "notice": "Execute the scheduled payment (anyone can call when due)"
+      },
+      "getPendingSubscriptions(address)": {
+        "notice": "Get pending (unpaid, uncancelled, due soon) subscriptions"
+      },
+      "getSubscription(uint256)": {
+        "notice": "Get subscription details"
+      },
+      "getTotalSubscriptions()": {
+        "notice": "Get total subscriptions created"
+      },
+      "getUserSubscriptions(address)": {
+        "notice": "Get all subscriptions for a user"
+      },
+      "schedulePayment(address,uint256,uint256,string)": {
+        "notice": "Create scheduled payment (AI creates multiple for \"recurring\")"
+      }
+    },
+    "notice": "Simple scheduled USDC payments on Arc blockchain",
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 100,
+        "contract": "src/arc.sol:AgentPayScheduledPayments",
+        "label": "subCounter",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_uint256"
+      },
+      {
+        "astId": 105,
+        "contract": "src/arc.sol:AgentPayScheduledPayments",
+        "label": "subscriptions",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_mapping(t_uint256,t_struct(Subscription)98_storage)"
+      },
+      {
+        "astId": 110,
+        "contract": "src/arc.sol:AgentPayScheduledPayments",
+        "label": "userSubscriptions",
+        "offset": 0,
+        "slot": "2",
+        "type": "t_mapping(t_address,t_array(t_uint256)dyn_storage)"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_uint256)dyn_storage": {
+        "base": "t_uint256",
+        "encoding": "dynamic_array",
+        "label": "uint256[]",
+        "numberOfBytes": "32"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_mapping(t_address,t_array(t_uint256)dyn_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => uint256[])",
+        "numberOfBytes": "32",
+        "value": "t_array(t_uint256)dyn_storage"
+      },
+      "t_mapping(t_uint256,t_struct(Subscription)98_storage)": {
+        "encoding": "mapping",
+        "key": "t_uint256",
+        "label": "mapping(uint256 => struct AgentPayScheduledPayments.Subscription)",
+        "numberOfBytes": "32",
+        "value": "t_struct(Subscription)98_storage"
+      },
+      "t_string_storage": {
+        "encoding": "bytes",
+        "label": "string",
+        "numberOfBytes": "32"
+      },
+      "t_struct(Subscription)98_storage": {
+        "encoding": "inplace",
+        "label": "struct AgentPayScheduledPayments.Subscription",
+        "members": [
+          {
+            "astId": 85,
+            "contract": "src/arc.sol:AgentPayScheduledPayments",
+            "label": "payer",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address"
+          },
+          {
+            "astId": 87,
+            "contract": "src/arc.sol:AgentPayScheduledPayments",
+            "label": "recipient",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address"
+          },
+          {
+            "astId": 89,
+            "contract": "src/arc.sol:AgentPayScheduledPayments",
+            "label": "amount",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 91,
+            "contract": "src/arc.sol:AgentPayScheduledPayments",
+            "label": "paymentDate",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256"
+          },
+          {
+            "astId": 93,
+            "contract": "src/arc.sol:AgentPayScheduledPayments",
+            "label": "paid",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_bool"
+          },
+          {
+            "astId": 95,
+            "contract": "src/arc.sol:AgentPayScheduledPayments",
+            "label": "cancelled",
+            "offset": 1,
+            "slot": "4",
+            "type": "t_bool"
+          },
+          {
+            "astId": 97,
+            "contract": "src/arc.sol:AgentPayScheduledPayments",
+            "label": "description",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_string_storage"
+          }
+        ],
+        "numberOfBytes": "192"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}
