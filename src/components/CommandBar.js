@@ -1,106 +1,162 @@
 // src/components/CommandBar.js
 "use client";
 
-import React, { useState, useRef } from 'react'; // Import useRef
-import styles from './styles.module.css';
+import React, { useState, useRef, useEffect } from 'react';
+import styles from './CommandBar.module.css';
+
+// Simple inline SVG for the microphone icon
+const MicIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={styles.micIcon}
+  >
+    <path
+      d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"
+      fill="currentColor"
+    />
+    <path
+      d="M19 12v1a7 7 0 0 1-14 0v-1h2v1a5 5 0 0 0 10 0v-1h2z"
+      fill="currentColor"
+    />
+    <path
+      d="M12 18.5a4.5 4.5 0 0 1-4.5-4.5H6a6 6 0 0 0 12 0h-1.5a4.5 4.5 0 0 1-4.5 4.5z"
+      fill="currentColor"
+    />
+  </svg>
+);
 
 export default function CommandBar({ onSubmit }) {
   const [command, setCommand] = useState('');
-  const [isListening, setIsListening] = useState(false); // New state to track mic status
-
-  // useRef will hold the speech recognition instance so it persists across re-renders
+  const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef(null);
 
-  // This function is called when the user clicks the "Submit Command" button
-  const handleSubmit = () => {
-    onSubmit(command);
-    // We won't clear the command here, as the user might want to edit it
+  // Clean up on unmount
+  useEffect(() => {
+    return () => {
+      if (recognitionRef.current) {
+        try { recognitionRef.current.stop(); } catch (e) {}
+        recognitionRef.current = null;
+      }
+    };
+  }, []);
+
+  const handleSubmit = (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    const trimmed = command.trim();
+    if (!trimmed) return;
+    onSubmit(trimmed);
+    // keep the text in the input so user can edit or resend
   };
 
-  // --- NEW FUNCTION: To handle microphone button click ---
   const toggleListening = () => {
     if (isListening) {
-      // If already listening, stop it
-      recognitionRef.current.stop();
+      // Stop listening
+      if (recognitionRef.current) {
+        try { recognitionRef.current.stop(); } catch (e) { console.error(e); }
+        recognitionRef.current = null;
+      }
       setIsListening(false);
-    } else {
-      // If not listening, start it
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      return;
+    }
 
-      // Check if the browser supports the API
-      if (!SpeechRecognition) {
-        alert("Sorry, your browser doesn't support Speech Recognition. Try Chrome or Edge.");
-        return;
+    // Start listening
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Speech Recognition is not supported in this browser. Use Chrome or Edge.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true; // keep listening until stopped
+    recognition.interimResults = true; // provide interim results
+    recognition.lang = 'en-US';
+
+    let interimBuffer = ''; // hold the latest interim segment
+
+    recognition.onresult = (event) => {
+      let interimTranscript = '';
+      let finalTranscript = '';
+
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        const result = event.results[i];
+        const txt = result[0].transcript;
+        if (result.isFinal) {
+          finalTranscript += txt;
+        } else {
+          interimTranscript += txt;
+        }
       }
 
-      // Create a new recognition instance and store it in the ref
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = true; // Keep listening even after pauses
-      recognitionRef.current.interimResults = true; // This gives us real-time results
-      recognitionRef.current.lang = 'en-US';
+      // If there is final transcript, merge it with existing input
+      // We'll replace the entire input with (previousFinals + current final + interim)
+      // Simpler UX: show only the new recognition text while speaking
+      const newText = (finalTranscript + interimTranscript).trim();
 
-      // Event handler for when speech is recognized
-      recognitionRef.current.onresult = (event) => {
-        // Loop through all results and build the transcript
-        let transcript = '';
-        for (let i = 0; i < event.results.length; i++) {
-          transcript += event.results[i][0].transcript;
-        }
-        
-        // Update the input field's text in real-time
-        setCommand(transcript);
-      };
+      if (newText.length > 0) {
+        setCommand(newText);
+      } else {
+        // do not overwrite user typed text with empty interim
+      }
 
-      // Event handler for when recognition ends
-      recognitionRef.current.onend = () => {
+      interimBuffer = interimTranscript;
+    };
+
+    recognition.onerror = (evt) => {
+      console.error("Speech recognition error:", evt);
+      if (evt.error === 'not-allowed' || evt.error === 'service-not-allowed') {
+        alert("Microphone access blocked. Please allow microphone permission for this site.");
+        try { recognition.stop(); } catch (e) {}
+        recognitionRef.current = null;
         setIsListening(false);
-      };
+      }
+    };
 
-      // Event handler for errors
-      recognitionRef.current.onerror = (event) => {
-        console.error("Speech recognition error:", event.error);
-        setIsListening(false);
-      };
+    recognition.onend = () => {
+      // ended by user or by the engine
+      recognitionRef.current = null;
+      setIsListening(false);
+    };
 
-      // Start listening
-      recognitionRef.current.start();
+    try {
+      recognition.start();
+      recognitionRef.current = recognition;
       setIsListening(true);
+    } catch (e) {
+      console.error("Could not start speech recognition:", e);
+      alert("Unable to start microphone. Make sure you allowed microphone permissions.");
+      recognitionRef.current = null;
+      setIsListening(false);
     }
   };
-  // --- END OF NEW FUNCTION ---
 
   return (
-    <div className={styles.commandBarContainer}>
-      {/* --- NEW: Microphone Button --- */}
+    <form className={styles.commandBarContainer} onSubmit={handleSubmit}>
       <button
-        className={`${styles.micButton} ${isListening ? styles.micActive : ''}`}
+        type="button"
+        className={`${styles.micButton || ''} ${isListening ? styles.micActive || '' : ''}`}
         onClick={toggleListening}
         title={isListening ? "Stop listening" : "Start listening"}
+        aria-pressed={isListening}
       >
-        {/* Simple SVG for the mic icon */}
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-          <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-          <line x1="12" y1="19" x2="12" y2="22"></line>
-        </svg>
+        <MicIcon />
       </button>
-      {/* --- END OF NEW BUTTON --- */}
 
       <input
         type="text"
-        placeholder={isListening ? "Listening..." : "Pay Netflix $12 on the 1st of every month..."}
         className={styles.commandInput}
+        placeholder={isListening ? "Listening..." : 'Type a command, e.g., "Pay Netflix $12 monthly"'}
         value={command}
         onChange={(e) => setCommand(e.target.value)}
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') {
-            handleSubmit();
-          }
-        }}
+        onKeyDown={(e) => { if (e.key === 'Enter') handleSubmit(e); }}
+        aria-label="Command input"
       />
-      <button className={styles.submitCommandButton} onClick={handleSubmit}>
-        Submit Command
+      <button type="submit" className={styles.processButton}>
+        Process
       </button>
-    </div>
+    </form>
   );
 }

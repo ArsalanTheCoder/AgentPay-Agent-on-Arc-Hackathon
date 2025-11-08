@@ -1,0 +1,92 @@
+/* src/components/WalletCard.module.css */
+
+.walletCard {
+  flex: 1;
+  min-width: 300px;
+  max-width: 400px;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  background: linear-gradient(180deg, var(--card), #fbfdff);
+  box-shadow: var(--shadow-2);
+  border: 1px solid rgba(11, 37, 85, 0.05);
+  transition: all 0.28s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.walletCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 26px 60px rgba(11, 37, 85, 0.08);
+}
+
+/* Gradient accent stripe at top */
+.walletCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 6px;
+  width: 100%;
+}
+
+.user::before {
+  background: linear-gradient(90deg, var(--accent-600), var(--accent-400));
+}
+
+.merchant::before {
+  background: linear-gradient(90deg, #ff9a4b, #ff7a2a);
+}
+
+.walletHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.walletTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0b2547;
+}
+
+.walletAddress {
+  font-size: 13px;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+
+.balance {
+  margin-top: 14px;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #06142b;
+}
+
+.currency {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin-left: 8px;
+  text-transform: uppercase;
+}
+
+/* --- Receipt Animation (No changes needed) --- */
+.receiptAnimation {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--accent-50);
+    color: var(--accent-600);
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 0.9rem;
+    animation: slideAndFade 1.5s ease-out forwards;
+}
+
+@keyframes slideAndFade {
+    0% { opacity: 0; transform: translateY(10px); }
+    20% { opacity: 1; transform: translateY(0); }
+    80% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-10px); }
+}

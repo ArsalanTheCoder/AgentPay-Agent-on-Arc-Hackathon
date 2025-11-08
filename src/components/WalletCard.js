@@ -1,29 +1,80 @@
 // src/components/WalletCard.js
 "use client";
 
-import React from 'react';
-import styles from './styles.module.css'; // Common component styles
+import React, { useState, useEffect, useRef } from 'react';
+import styles from './WalletCard.module.css';
 
-export default function WalletCard({ title, address, balance, type }) {
-  // Simple state for animation, can be expanded later
-  const [currentBalance, setCurrentBalance] = React.useState(balance);
-  const [isAnimating, setIsAnimating] = React.useState(false);
+// A simple utility to format numbers with commas
+const formatBalance = (num) => {
+  return Number(num).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+};
 
-  // A placeholder for future animation logic
-  React.useEffect(() => {
-    setCurrentBalance(balance); // Update balance when prop changes
-  }, [balance]);
+export default function WalletCard({
+  title,
+  address,
+  balance,
+  type, // 'user' or 'merchant' — used for styling only
+  isAnimating,
+  animationAmount,
+  previousBalance,
+}) {
+  const [displayBalance, setDisplayBalance] = useState(balance);
+  const intervalRef = useRef(null);
 
+  // choose variant class for CSS styling
+  const variantClass = type === 'merchant' ? styles.merchant : styles.user;
+
+  useEffect(() => {
+    if (!isAnimating) {
+      setDisplayBalance(balance);
+    }
+  }, [balance, isAnimating]);
+
+  useEffect(() => {
+    if (isAnimating && animationAmount > 0) {
+      const isUser = type === 'user';
+      const startBalance = previousBalance ?? balance;
+      const endBalance = isUser ? startBalance - animationAmount : startBalance + animationAmount;
+      const duration = 900;
+      const steps = 30;
+      const stepTime = duration / steps;
+      const increment = (endBalance - startBalance) / steps;
+
+      let currentStep = 0;
+
+      intervalRef.current = setInterval(() => {
+        if (currentStep >= steps) {
+          clearInterval(intervalRef.current);
+          setDisplayBalance(endBalance);
+          return;
+        }
+        setDisplayBalance(startBalance + (increment * currentStep));
+        currentStep++;
+      }, stepTime);
+    }
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [isAnimating, animationAmount, previousBalance, type]);
 
   return (
-    <div className={`${styles.walletCard} ${styles[type]}`}>
-      <h3 className={styles.walletTitle}>{title}</h3>
-      <p className={styles.walletAddress}>{address}</p>
-      <div className={styles.walletBalance}>
-        <span className={styles.balanceAmount}>{currentBalance.toLocaleString()}</span>
-        <span className={styles.balanceUnit}> USDC</span>
+    <div className={`${styles.walletCard} ${variantClass} pro-card`}>
+      <div className={styles.cardHeader}>
+        <h3 className={styles.title}>{title}</h3>
+        {address && <span className={`${styles.address} mono`}>{`${address.substring(0, 6)}...${address.substring(address.length - 4)}`}</span>}
       </div>
-      <button className={styles.addFundsButton}>Add Funds</button>
+      <div className={styles.balanceWrapper}>
+        <h1 className={styles.balance}>
+          ${formatBalance(displayBalance)} <span className={styles.currency}>USC</span>
+        </h1>
+      </div>
+
+      {type === 'user' && isAnimating && (
+        <div className={styles.receiptAnimation}>
+          <span>-${animationAmount} USC</span>
+        </div>
+      )}
     </div>
   );
 }

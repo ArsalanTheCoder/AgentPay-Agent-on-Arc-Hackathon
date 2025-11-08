@@ -1,0 +1,126 @@
+/* src/components/TransactionHistory.module.css */
+
+.historyContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.tabHeader {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(11, 37, 85, 0.08);
+}
+
+.tabButton {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+  background-color: transparent;
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tabButton:hover {
+  color: #07203a;
+}
+
+.activeTab {
+  color: var(--accent-600);
+  background-color: var(--accent-50);
+}
+
+/* -------- List Item Styling -------- */
+.txItem {
+  display: grid;
+  grid-template-columns: 50px 1fr 100px 100px 100px;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  transition: background-color 0.2s ease;
+}
+
+.txItem:hover {
+  background-color: rgba(239, 246, 255, 0.7); /* Light blue hover */
+}
+
+.itemIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 16px;
+  background-color: #e0e0e0;
+  color: #555;
+}
+
+/* Example coloring */
+.itemIcon.N { background-color: #111; color: #E50914; } /* Netflix */
+.itemIcon.S { background-color: #1DB954; color: #FFF; } /* Spotify */
+.itemIcon.A { background-color: #FF9900; color: #000; } /* Amazon */
+
+.itemDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+.merchantName {
+  font-weight: 700;
+  color: #07203a;
+}
+
+.amountDate {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.statusTag {
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.statusPaid { background-color: rgba(16, 185, 129, 0.1); color: var(--success); }
+.statusScheduled { background-color: rgba(59, 130, 246, 0.1); color: var(--accent-400); }
+.statusCancelled { background-color: rgba(110, 120, 130, 0.1); color: var(--muted); }
+
+.actionButton {
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.payButton {
+  background-color: var(--accent-600);
+  color: white;
+  border-color: var(--accent-600);
+}
+.payButton:hover { background-color: #0056b3; }
+
+.cancelButton {
+  background-color: transparent;
+  color: var(--muted);
+  border-color: rgba(110, 120, 130, 0.2);
+}
+.cancelButton:hover { background-color: rgba(110, 120, 130, 0.1); color: #07203a; }
+
+.emptyState {
+  text-align: center;
+  padding: 3rem 0;
+  color: var(--muted);
+  font-weight: 500;
+}

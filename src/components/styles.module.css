@@ -1,511 +1,153 @@
 /* src/components/styles.module.css */
-/* --- NEW, ENHANCED STYLES --- */
 
-/* Header Styles */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 40px;
-  background-color: var(--bg-card);
-  border-bottom: 1px solid var(--border-color);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-.headerLeft {
-  display: flex;
-  align-items: center;
-}
-
-.logoIcon {
-  margin-right: 10px;
-  width: 30px;
-  height: 30px;
-}
-.appName {
-  font-size: 1.4em;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.headerRight {
-  position: relative;
-}
-
-.profileContainer {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  padding: 8px 12px;
-  border-radius: var(--radius-sm);
-  transition: background-color 0.2s ease;
-}
-.profileContainer:hover {
-  background-color: var(--bg-hover);
-}
-
-.profileIcon {
-  width: 24px;
-  height: 24px;
-  color: var(--text-secondary);
-}
-
-.dropdownArrow {
-  margin-left: 8px;
-  color: var(--text-secondary);
-  transition: transform 0.2s ease;
-}
-
-.dropdownMenu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-medium);
-  min-width: 150px;
-  z-index: 1000;
-  margin-top: 10px;
-  overflow: hidden;
-}
-.dropdownMenu a {
-  display: block;
-  padding: 12px 18px;
-  color: var(--text-primary);
-  text-decoration: none;
-  font-size: 0.95em;
-  transition: background-color 0.2s ease;
-}
-.dropdownMenu a:hover {
-  background-color: var(--bg-hover);
-}
-
-
-/* Command Bar Styles (Major Redesign) */
-.commandBarContainer {
-  display: flex;
-  width: 100%;
-  max-width: 700px;
-  margin-bottom: 40px;
-  align-items: center;
-  background-color: var(--bg-card);
-  border-radius: var(--radius-pill); /* Pill shape */
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-soft);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  overflow: hidden; /* Important for pill shape */
-}
-.commandBarContainer:focus-within {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px var(--primary-light);
-}
-
-.micButton {
-  flex-shrink: 0;
-  width: 60px; /* Larger tap target */
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-right: 1px solid var(--border-color);
-  background-color: transparent;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.micButton:hover {
-  background-color: var(--bg-hover);
-  color: var(--primary);
-}
-
-.micActive {
-  background-color: var(--red-light);
-  color: var(--red);
-  animation: pulse 1.5s infinite;
-}
-.micActive:hover {
-  background-color: var(--red-light);
-  color: var(--red);
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(255, 59, 48, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0); }
-}
-
-.commandInput {
-  flex-grow: 1;
-  padding: 0 20px;
-  border: none;
-  outline: none;
-  font-size: 1.1em;
-  font-weight: 500;
-  color: var(--text-primary);
-  height: 60px;
-  background: transparent;
-}
-.commandInput::placeholder {
-  color: var(--text-secondary);
-  font-weight: 400;
-}
-
-.submitCommandButton {
-  flex-shrink: 0;
-  padding: 0 30px;
-  background: var(--primary);
-  color: var(--text-on-primary);
-  font-size: 1.1em;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  height: 60px;
-  border-left: 1px solid var(--border-color);
-}
-.submitCommandButton:hover {
-  background-color: var(--primary-hover);
-}
-
-
-/* Wallet Card Styles */
+/* -------- Wallet Section ---------- */
 .walletCardsWrapper {
   display: flex;
-  gap: 30px; /* Space between cards */
-  margin-bottom: 40px;
-  position: relative; /* For animation */
-}
-
-.walletCard {
-  background-color: var(--bg-card);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-soft);
-  padding: 30px;
-  width: 320px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border: 1px solid var(--border-color);
+  justify-content: center;
+  align-items: flex-start;
+  gap: 80px;
+  margin: 20px auto 0 auto;
+  flex-wrap: nowrap;
   position: relative;
-  overflow: hidden;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-.walletCard:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-medium);
+  max-width: 1000px;
 }
 
-.walletTitle {
-  font-size: 1.3em;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 10px;
-}
-
-.walletAddress {
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-  font-size: 0.85em;
-  color: var(--text-secondary);
-  margin-bottom: 20px;
-  word-break: break-all;
-}
-
-.walletBalance {
-  display: flex;
-  align-items: baseline;
-  margin-bottom: 25px;
-}
-
-.balanceAmount {
-  font-size: 2.2em;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-right: 5px;
-}
-
-.balanceUnit {
-  font-size: 1.1em;
-  font-weight: 500;
-  color: var(--text-secondary);
-}
-
-.addFundsButton {
-  background-color: var(--primary-light);
-  color: var(--primary);
-  padding: 10px 15px;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
-  font-size: 0.9em;
-  align-self: flex-start;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-.addFundsButton:hover {
-  background-color: var(--primary);
-  color: var(--text-on-primary);
-}
-
-
-/* Transaction Animation Circle */
-.animationCircle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 60px;
-  height: 60px;
-  background-color: var(--green); /* Use new green */
-  border-radius: 50%;
+/* -------- Main Action/History Panel ---------- */
+.fullWidthRow {
+  width: 100%;
+  margin-top: 28px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  color: white;
-  font-weight: 600;
-  font-size: 0.9em;
-  opacity: 0;
-  animation: fadeSlide 1.5s forwards ease-out;
-  pointer-events: none; /* Make it unclickable */
-  z-index: 5;
 }
 
-@keyframes fadeSlide {
-  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-  20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  80% { opacity: 1; transform: translate(150%, -50%) scale(1); }
-  100% { opacity: 0; transform: translate(150%, -50%) scale(0.5); }
-}
-
-
-/* Confirmation Panel Styles */
-.confirmationPanel {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  padding: 30px;
-  margin-top: 30px;
+.fullWidthPanel {
   width: 100%;
-  max-width: 700px;
-  box-shadow: var(--shadow-soft);
+  max-width: 1200px;
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 252, 255, 0.96));
+  box-shadow: var(--shadow-2);
+  border: 1px solid rgba(11, 37, 85, 0.06);
+  min-height: 120px;
 }
 
-.panelTitle {
-  font-size: 1.3em;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 15px;
+/* -------- FINAL Action Card (Confirmation Panel) ---------- */
+.actionCard {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, #ffffff, #fcfdff);
+  border: 1px solid rgba(11, 37, 85, 0.04);
+  box-shadow: 0 12px 36px rgba(11, 37, 85, 0.05);
+  margin-bottom: 14px;
 }
 
-.previewText {
-  font-size: 1.1em;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  margin-bottom: 25px;
+.actionLeft {
+  display: flex;
+  gap: 16px;
+  align-items: center;
 }
-.previewText strong {
-  color: var(--text-primary);
-  font-weight: 600;
+
+.merchantBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, #f0f7ff, #eef7ff);
+  box-shadow: 0 8px 22px rgba(59, 130, 246, 0.08);
+  flex-shrink: 0;
 }
-.previewText em {
-  font-style: normal;
-  color: var(--primary);
-  font-weight: 600;
+
+.merchantInitial {
+  font-weight: 900;
+  font-size: 20px;
+  color: var(--accent-600);
+}
+
+.actionText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.actionTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #07203a;
+}
+
+.actionSubtitle {
+  font-size: 14px;
+  color: #55677a;
+}
+
+.actionSubtitle strong {
+  color: #07203a;
 }
 
 .actionButtons {
   display: flex;
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-/* Base Button Style */
-.baseButton {
-  padding: 14px 28px;
-  border-radius: var(--radius-md);
-  font-size: 1em;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  display: flex;
-  justify-content: center;
   align-items: center;
-}
-.baseButton:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-medium);
-}
-.baseButton:active {
-  transform: translateY(0px) scale(0.98);
-  box-shadow: var(--shadow-soft);
-}
-
-.confirmButton {
-  composes: baseButton;
-  background-color: var(--green);
-  color: white;
-}
-.confirmButton:hover {
-  background-color: var(--green-hover);
-}
-
-.demoButton {
-  composes: baseButton;
-  background-color: var(--text-secondary);
-  color: white;
-}
-.demoButton:hover {
-  background-color: var(--text-primary);
-}
-
-.transactionMessage {
-  font-size: 0.95em;
-  color: var(--green);
-  font-weight: 500;
-  margin-top: 10px;
-}
-
-/* History Tabs */
-.tabNav {
-  display: flex;
-  border-bottom: 2px solid var(--border-color);
-  margin-bottom: 20px;
-}
-
-.tabButton {
-  padding: 12px 20px;
-  font-size: 1em;
-  font-weight: 500;
-  color: var(--text-tertiary);
-  background: none;
-  border: none;
-  border-bottom: 3px solid transparent;
-  cursor: pointer;
-  transition: color 0.2s ease, border-color 0.2s ease;
-  margin-right: 15px;
-  margin-bottom: -2px; /* Pulls text down to align with border */
-}
-.tabButton:hover {
-  color: var(--text-primary);
-}
-.tabButton.activeTab {
-  color: var(--primary);
-  border-color: var(--primary);
-  font-weight: 600;
-}
-
-.tabContent {
-  width: 100%;
-}
-
-.scheduledList,
-.historyList {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.scheduledItem,
-.historyItem {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--bg-card);
-  padding: 18px 24px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
-}
-.scheduledItem:hover,
-.historyItem:hover {
-  box-shadow: var(--shadow-medium);
-  border-color: #c9c9c9;
-}
-
-.itemText {
-  margin: 0;
-  font-size: 1em;
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.itemActions {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.actionButton {
-  color: var(--primary);
-  font-weight: 500;
-  font-size: 0.9em;
-  padding: 5px 10px;
-  border-radius: var(--radius-sm);
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-.actionButton:hover {
-  background-color: var(--primary-light);
-  color: var(--primary-hover);
+  gap: 16px;
 }
 
 .actionLink {
-  color: var(--text-secondary);
-  font-size: 0.9em;
-  font-weight: 500;
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: color 0.2s ease, border-color 0.2s ease;
-}
-.actionLink:hover {
-  color: var(--text-primary);
-  border-color: var(--text-primary);
-}
-
-.statusText {
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
   font-weight: 600;
-  margin-right: 5px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.95em;
+  color: #334155;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.historyItem.paid .statusText {
-  color: var(--green);
-}
-.historyItem.paid .statusText::before {
-  content: '✔';
-  display: inline-block;
+.actionLink:hover:not(:disabled) {
+  background-color: var(--accent-50);
+  color: var(--accent-600);
 }
 
-.historyItem.failed .statusText {
-  color: var(--red);
-}
-.historyItem.failed .statusText::before {
-  content: '✖';
-  display: inline-block;
+.actionLink.primary {
+  background-color: var(--accent-50);
+  color: var(--accent-600);
 }
 
-.noData {
-  text-align: center;
-  color: var(--text-secondary);
-  padding: 30px 20px;
-  background-color: var(--bg-card);
-  border-radius: var(--radius-lg);
-  border: 1px dashed var(--border-color);
+.actionLink:disabled {
+  color: #adb5bd;
+  cursor: not-allowed;
 }
 
-/* Overall Container for the main page */
-.pageContainer {
+/* -------- History Scroll & Messages -------- */
+.historyScroll {
   width: 100%;
-  max-width: 1000px; /* Max width for the entire content area */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px; /* Space between main sections */
-  padding: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 8px;
 }
 
-.mainTitle {
-  font-size: 2.8em;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 30px;
-  text-align: center;
+.historyScroll::-webkit-scrollbar { width: 10px; }
+.historyScroll::-webkit-scrollbar-track { background: transparent; }
+.historyScroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(11, 37, 85, 0.08), rgba(11, 37, 85, 0.18));
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.9);
 }
+
+.messageInline {
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  margin-bottom: 14px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(6, 18, 43, 0.04);
+  border: 1px solid rgba(11, 37, 85, 0.04);
+}
+
+.messageInline.info { background: linear-gradient(180deg, #f0f7ff, #f6faff); color: #0b2547; }
+.messageInline.success { background: rgba(16, 185, 129, 0.08); color: var(--success); }
+.messageInline.error { background: rgba(239, 68, 68, 0.08); color: var(--danger); }
