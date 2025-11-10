@@ -46,8 +46,16 @@ Subscriptions aren't just stored in a database; they are executed trustlessly on
 
 AgentPay orchestrates a seamless flow from user intent to blockchain finality.
 
-![Architecture Diagram](assets/architecture.png)
-*(Note to Arsalan: Please add an 'architecture.png' to your assets folder to display here. It should show: User Input -> Next.js (AI Parsing) -> Ethers.js -> Arc Smart Contract -> USDC Transfer)*
+```mermaid
+flowchart TD
+    A[👤 User] -->|Types Command: "Pay Netflix $12 monthly"| B(🗣️ AI Command Parser)
+    B -->|Extracts: Merchant, Amount, Frequency| C{⚙️ Next.js Frontend}
+    C -->|1. Request Approval| D[💰 USDC Contract]
+    C -->|2. Schedule Payment| E[📜 AgentPay Smart Contract]
+    E -->|Executes Transfer| D
+    D -->|Moves Funds| F[🏦 Merchant Wallet]
+    E -->|Emits Event| C
+    C -->|Updates UI| G[✅ Transaction History]
 
 ### 🔄 Data Flow
 1.  **Input:** User types a natural language command.
