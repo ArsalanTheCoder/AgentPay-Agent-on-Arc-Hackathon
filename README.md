@@ -7,8 +7,6 @@
 ### **Automate payments. Simplify life.**
 Bridging the gap between AI intent and on-chain execution.
 
-[View Demo](#-live-demo) • [Key Features](#-key-features) • [Architecture](#%EF%B8%8F-system-architecture) • [Getting Started](#-getting-started-for-developers)
-
 </div>
 
 ---
