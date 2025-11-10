@@ -46,16 +46,23 @@ Subscriptions aren't just stored in a database; they are executed trustlessly on
 
 AgentPay orchestrates a seamless flow from user intent to blockchain finality.
 
-```mermaid
 flowchart TD
-    A[👤 User] -->|Types Command: "Pay Netflix $12 monthly"| B(🗣️ AI Command Parser)
-    B -->|Extracts: Merchant, Amount, Frequency| C{⚙️ Next.js Frontend}
-    C -->|1. Request Approval| D[💰 USDC Contract]
-    C -->|2. Schedule Payment| E[📜 AgentPay Smart Contract]
-    E -->|Executes Transfer| D
-    D -->|Moves Funds| F[🏦 Merchant Wallet]
-    E -->|Emits Event| C
-    C -->|Updates UI| G[✅ Transaction History]
+    A[👤 User Input] -->|Types Command: "Pay Netflix $12 monthly"| B(🗣️ AI Command Parser)
+    B --> C{⚙️ Next.js Frontend Engine}
+    C -->|Extracts: Merchant, Amount, Frequency| D[📋 Transaction Preparation]
+    D --> E[🔐 Demo Wallet Signer]
+    E -->|1. Auto-Approve USDC| F[💰 USDC Contract]
+    E -->|2. Schedule Payment| G[📜 AgentPay Smart Contract]
+    G -->|Executes Transfer| F
+    F -->|Moves Funds| H[🏦 Merchant Wallet]
+    G -->|Emits Event| C
+    C -->|Updates UI| I[✅ Transaction History & Live Animation]
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#dfd,stroke:#333,stroke-width:2px
+    style E fill:#ffd,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5
+    style G fill:#f96,stroke:#333,stroke-width:4px
 
 ### 🔄 Data Flow
 1.  **Input:** User types a natural language command.
