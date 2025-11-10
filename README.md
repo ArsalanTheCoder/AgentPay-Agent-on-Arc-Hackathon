@@ -42,28 +42,6 @@ Subscriptions aren't just stored in a database; they are executed trustlessly on
 
 ---
 
-## 🏗️ System Architecture
-
-AgentPay orchestrates a seamless flow from user intent to blockchain finality.
-
-flowchart TD
-    A[👤 User Input] -->|Types Command: "Pay Netflix $12 monthly"| B(🗣️ AI Command Parser)
-    B --> C{⚙️ Next.js Frontend Engine}
-    C -->|Extracts: Merchant, Amount, Frequency| D[📋 Transaction Preparation]
-    D --> E[🔐 Demo Wallet Signer]
-    E -->|1. Auto-Approve USDC| F[💰 USDC Contract]
-    E -->|2. Schedule Payment| G[📜 AgentPay Smart Contract]
-    G -->|Executes Transfer| F
-    F -->|Moves Funds| H[🏦 Merchant Wallet]
-    G -->|Emits Event| C
-    C -->|Updates UI| I[✅ Transaction History & Live Animation]
-
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style B fill:#bbf,stroke:#333,stroke-width:2px
-    style C fill:#dfd,stroke:#333,stroke-width:2px
-    style E fill:#ffd,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5
-    style G fill:#f96,stroke:#333,stroke-width:4px
-
 ### 🔄 Data Flow
 1.  **Input:** User types a natural language command.
 2.  **Parsing:** The frontend AI module structures this into a JSON payload (merchant address, amount, interval).
